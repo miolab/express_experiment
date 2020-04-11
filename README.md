@@ -1,7 +1,9 @@
 # Express Experiment (Node.js)
 
+## Usage
+
 ```
-npm install --save express
-npm init
-node xxxxxx.js
+$ npm init
+$ npm install --save express
+$ node xxxxxx.js
 ```
