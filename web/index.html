@@ -16,31 +16,62 @@
     <h1>ToDo List</h1>
     <div>
       <ul id="todo-container"></ul>
+      <input id="new-title" />
+      <button id="new-add-button">追加する</button>
     </div>
     <script>
-      fetch("./api/v1/list")
-        .then((response) => response.json())
-        .then((todoList) => {
-          const todoContainer = document.querySelector("#todo-container");
+      function renderTodoList(todoList) {
+        const todoContainer = document.querySelector("#todo-container");
 
-          todoContainer.innerHTML = "";
+        todoContainer.innerHTML = "";
 
-          for (const item of todoList) {
-            const li = document.createElement("li");
-            const label = document.createElement("label");
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = item.done;
-            const text = new Text(item.title);
+        for (const item of todoList) {
+          const li = document.createElement("li");
+          const label = document.createElement("label");
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = item.done;
+          const text = new Text(item.title);
 
-            label.appendChild(checkbox);
-            label.appendChild(text);
+          label.appendChild(checkbox);
+          label.appendChild(text);
 
-            li.appendChild(label);
+          li.appendChild(label);
 
-            todoContainer.appendChild(li);
-          }
-        });
+          todoContainer.appendChild(li);
+        }
+      }
+
+      async function fetchTodoList() {
+        return fetch("./api/v1/list")
+          .then((response) => response.json())
+          .then((todoList) => {
+            renderTodoList(todoList);
+          });
+      }
+
+      async function postNewItem(todoItem) {
+        const body = new FormData();
+        body.append("title", todoItem.title);
+
+        return fetch("./api/v1/add", {
+          method: "POST",
+          body,
+        }).then((response) => response.json());
+      }
+
+      const newTitleInput = document.querySelector("#new-title");
+      const newAddButton = document.querySelector("#new-add-button");
+
+      newAddButton.addEventListener("click", (event) => {
+        const title = newTitleInput.value;
+
+        if (title) {
+          postNewItem({ title }).then((item) => fetchTodoList());
+        }
+      });
+
+      fetchTodoList();
     </script>
   </body>
 </html>
