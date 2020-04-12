@@ -20,6 +20,7 @@
       <button id="new-add-button">追加する</button>
     </div>
     <script>
+      // render ToDoList
       function renderTodoList(todoList) {
         const todoContainer = document.querySelector("#todo-container");
 
@@ -42,6 +43,7 @@
         }
       }
 
+      // render ToDoList by fetch from API
       async function fetchTodoList() {
         return fetch("./api/v1/list")
           .then((response) => response.json())
@@ -50,6 +52,7 @@
           });
       }
 
+      // POST new item to API
       async function postNewItem(todoItem) {
         const body = new FormData();
         body.append("title", todoItem.title);
@@ -63,6 +66,7 @@
       const newTitleInput = document.querySelector("#new-title");
       const newAddButton = document.querySelector("#new-add-button");
 
+      // POST new item when add-button clicked
       newAddButton.addEventListener("click", (event) => {
         const title = newTitleInput.value;
 
@@ -71,6 +75,7 @@
         }
       });
 
+      // Initial load
       fetchTodoList();
     </script>
   </body>
