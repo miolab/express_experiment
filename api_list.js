@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+app.use(express.static("web"));
+
 // API page
 // http://locaslhost:3000/api/v1/list
 app.get("/api/v1/list", (req, res) => {
