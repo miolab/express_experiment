@@ -1,12 +1,14 @@
 const express = require("express");
 const multer = require("multer");
 const uuidv4 = require("uuid/v4");
+const path = require("path");
 
 const app = express();
 const port = 3000;
 
 app.use(multer().none());
 app.use(express.static("web"));
+app.use(express.static(path.join(__dirname, "public")));
 
 // ToDoList data
 const todoList = [];
@@ -52,6 +54,24 @@ app.delete("/api/v1/item/:id", (req, res) => {
   if (index >= 0) {
     const deleted = todoList.splice(index, 1);
     console.log("Delete: " + JSON.stringify(deleted[0]));
+  }
+
+  // response status 200
+  res.sendStatus(200);
+});
+
+// edit item in ToDoList
+app.put("/api/v1/item/:id", (req, res) => {
+  // check ID
+  const index = todoList.findIndex((item) => item.id === req.params.id);
+
+  // case applicable ID
+  if (index >= 0) {
+    const item = todoList[index];
+    if (req.body.done) {
+      item.done = req.body.done === "true";
+    }
+    console.log("Edit: " + JSON.stringify(item));
   }
 
   // response status 200
