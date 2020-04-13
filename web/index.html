@@ -20,10 +20,26 @@
       <button id="new-add-button">追加する</button>
     </div>
     <script>
+      // Delete method
+      function deleteButtonListener(event) {
+        const button = event.currentTarget;
+        const id = button.dataset.id;
+
+        fetch(`./api/v1/item/${id}`, { method: "DELETE" }).then(() =>
+          fetchTodoList()
+        );
+      }
+
       // render ToDoList
       function renderTodoList(todoList) {
         const todoContainer = document.querySelector("#todo-container");
 
+        const deleteButtonList = todoContainer.querySelectorAll(
+          ".delete-button"
+        );
+        deleteButtonList.forEach((button) =>
+          button.removeEventListener("click", deleteButtonListener)
+        );
         todoContainer.innerHTML = "";
 
         for (const item of todoList) {
@@ -34,8 +50,15 @@
           checkbox.checked = item.done;
           const text = new Text(item.title);
 
+          const deleteButton = document.createElement("button");
+          deleteButton.innerText = "削除する";
+          deleteButton.classList.add("delete-button");
+          deleteButton.dataset.id = item.id;
+          deleteButton.addEventListener("click", deleteButtonListener);
+
           label.appendChild(checkbox);
           label.appendChild(text);
+          label.appendChild(deleteButton);
 
           li.appendChild(label);
 

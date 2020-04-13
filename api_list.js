@@ -21,7 +21,7 @@ app.get("/api/v1/list", (req, res) => {
 // http://locaslhost:3000/api/v1/add
 app.post("/api/v1/add", (req, res) => {
   // generate uniq ID
-  const id = uuidv4;
+  const id = uuidv4();
 
   // fetch submit data from client
   const todoData = req.body;
@@ -41,6 +41,21 @@ app.post("/api/v1/add", (req, res) => {
 
   // response added item to client
   res.json(todoItem);
+});
+
+// delete item from ToDoList
+app.delete("/api/v1/item/:id", (req, res) => {
+  // check ID
+  const index = todoList.findIndex((item) => item.id === req.params.id);
+
+  // case applicable ID
+  if (index >= 0) {
+    const deleted = todoList.splice(index, 1);
+    console.log("Delete: " + JSON.stringify(deleted[0]));
+  }
+
+  // response status 200
+  res.sendStatus(200);
 });
 
 // set up server
