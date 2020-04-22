@@ -9,9 +9,9 @@
 
 ```
 $ npm init
-$ npm install --save express
-$ npm install --save multer
-$ npm install --save uuid
+$ npm install express
+$ npm install multer
+$ npm install uuid
 ```
 
 ## Usage
